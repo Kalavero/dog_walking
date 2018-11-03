@@ -24,8 +24,8 @@ ActiveRecord::Schema.define(version: 2018_11_02_125558) do
     t.date "appointment_date", null: false
     t.float "price", null: false
     t.integer "duration", null: false
-    t.date "start_time", null: false
-    t.date "end_time", null: false
+    t.time "start_time", null: false
+    t.time "end_time", null: false
     t.float "latitude", null: false
     t.float "longitude", null: false
     t.datetime "created_at", null: false
