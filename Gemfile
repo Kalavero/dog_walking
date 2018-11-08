@@ -5,9 +5,9 @@ source 'https://rubygems.org'
 ruby '2.5.3'
 
 gem 'bootsnap', '>= 1.1.0', require: false
+gem 'pg'
 gem 'puma', '~> 3.11'
 gem 'rails', '~> 5.2.1'
-gem 'pg'
 
 group :development, :test do
   gem 'byebug', platforms: %i[mri mingw x64_mingw]

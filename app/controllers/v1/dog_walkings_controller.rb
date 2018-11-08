@@ -4,7 +4,7 @@ class V1::DogWalkingsController < ApplicationController
   before_action :set_dog_walking, only: [:show]
 
   def index
-    @dog_walkings = params[:not_started]? DogWalking.not_started : DogWalking.all
+    @dog_walkings = params[:not_started] ? DogWalking.not_started : DogWalking.all
 
     json_response(@dog_walkings)
   end
