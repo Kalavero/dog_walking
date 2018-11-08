@@ -23,16 +23,39 @@ RSpec.describe 'dog_walkings API' do
     context 'when not_started flag is true' do
       it 'returns only not started walkings' do
         create(:dog_walking,
-               start_time: Time.zone.now,
-               appointment_date: Time.zone.yesterday)
-        pending_walking = create(:dog_walking,
-                                 start_time: Time.zone.now,
-                                 appointment_date: Time.zone.tomorrow)
+               start_time: Time.now - 10.minutes,
+               appointment_date: Date.today )
+        not_started_walking = create(:dog_walking,
+                                     start_time: Time.now + 10.minutes,
+                                     appointment_date: Date.today)
 
         get '/v1/dog_walkings', params: { not_started: true }
 
         expect(json_response.size).to eq(1)
-        expect(json_response.first).to include(id: pending_walking.id)
+        expect(json_response.first).to include(id: not_started_walking.id)
+      end
+    end
+
+    context 'when pagination params are provided' do
+      it 'returns dog walkings paginated' do
+        create_list(:dog_walking, 3)
+
+        get '/v1/dog_walkings', params: { page: 2, per_page: 2 }
+
+        expect(json_response.size).to eq(1)
+      end
+
+      context 'when not_started flag is true' do
+        it 'returns dog walkings paginated' do
+          create_list(:dog_walking, 3,
+                      appointment_date: Date.today,
+                      start_time: Time.now + 10.minutes)
+
+          get '/v1/dog_walkings',
+            params: { not_started: true, page: 2, per_page: 2 }
+
+          expect(json_response.size).to eq(1)
+        end
       end
     end
   end
