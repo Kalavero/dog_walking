@@ -23,4 +23,21 @@ RSpec.describe DogWalking do
     it { should validate_presence_of(:latitude) }
     it { should validate_presence_of(:longitude) }
   end
+
+  ##############
+  ### Scopes ###
+  ##############
+  describe '.not_started' do
+    it 'returns all dog_walkings that have not started yet' do
+      not_started_walking = create(:dog_walking,
+                                   start_time: Time.zone.now + 30.minutes,
+                                   appointment_date: Date.today)
+
+      create(:dog_walking,
+             start_time: Time.zone.now - 30.minutes,
+             appointment_date: Date.today)
+
+      expect(described_class.not_started).to eq([not_started_walking])
+    end
+  end
 end
