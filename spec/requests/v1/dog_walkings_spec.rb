@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe 'dog_walkings API' do
@@ -16,6 +18,68 @@ RSpec.describe 'dog_walkings API' do
       get '/v1/dog_walkings'
 
       expect(json_response.size).to eq(3)
+    end
+
+    context 'when not_started flag is true' do
+      it 'returns only not started walkings' do
+        create(:dog_walking,
+               start_time: Time.zone.now,
+               appointment_date: Time.zone.yesterday)
+        pending_walking = create(:dog_walking,
+                                 start_time: Time.zone.now,
+                                 appointment_date: Time.zone.tomorrow)
+
+        get '/v1/dog_walkings', params: { not_started: true }
+
+        expect(json_response.size).to eq(1)
+        expect(json_response.first).to include(id: pending_walking.id)
+      end
+    end
+  end
+
+  describe 'GET /v1/dog_walkings/:id' do
+    it 'returns HTTP status 200 OK' do
+      dog_walking_id = create(:dog_walking).id
+
+      get "/v1/dog_walkings/#{dog_walking_id}"
+
+      expect(response).to have_http_status(:ok)
+    end
+
+    it 'returns a dog walking' do
+      dog_walking = create(:dog_walking)
+
+      get "/v1/dog_walkings/#{dog_walking.id}"
+
+      expect(json_response).to include(id: dog_walking.id)
+    end
+
+    it 'returns all the attributes available in DogWalking' do
+      dog_walking = create(:dog_walking)
+
+      get "/v1/dog_walkings/#{dog_walking.id}"
+
+      expect(json_response.keys)
+        .to eq(dog_walking.attributes.symbolize_keys.keys)
+    end
+
+    context 'when DogWalking is not found' do
+      it 'returns HTTP status 400 not found' do
+        invalid_id = 45
+
+        get "/v1/dog_walkings/#{invalid_id}"
+
+        expect(response).to have_http_status(:not_found)
+      end
+
+      it 'returns the error in json format' do
+        invalid_id = 45
+
+        get "/v1/dog_walkings/#{invalid_id}"
+
+        expect(json_response[:error])
+          .to eq(message: "Couldn't find DogWalking with 'id'=#{invalid_id}")
+      end
     end
   end
 end
