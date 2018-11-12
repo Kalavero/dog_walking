@@ -1,27 +1,13 @@
-development:
+development: &default
   adapter: postgresql
   encoding: unicode
   database: dogwalking_development
   pool: 5
   username: postgres
-  password: password
-  host: localhost
+  password:
+  host: db
   port: 5432
 
 test:
-  adapter: postgresql
-  encoding: unicode
+  <<: *default
   database: dogwalking_test
-  pool: 5
-  username: postgres
-  password: password
-  host: localhost
-  port: 5432
-
-production:
-  adapter: postgresql
-  encoding: unicode
-  database: dog_walking_production
-  pool: 5
-  username: dogwalking
-  password:

@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 # This file is auto-generated from the current state of the database. Instead
 # of editing this file, please use the migrations feature of Active Record to
 # incrementally modify your database, and then regenerate this schema definition.
@@ -12,33 +10,35 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20_181_102_125_558) do
+ActiveRecord::Schema.define(version: 2018_11_02_125558) do
+
   # These are extensions that must be enabled in order to support this database
-  enable_extension 'plpgsql'
+  enable_extension "plpgsql"
 
-  create_table 'dog_walking_pets', force: :cascade do |t|
-    t.integer 'pet_id', null: false
-    t.integer 'dog_walking_id', null: false
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
+  create_table "dog_walking_pets", force: :cascade do |t|
+    t.integer "pet_id", null: false
+    t.integer "dog_walking_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table 'dog_walkings', force: :cascade do |t|
-    t.integer 'status'
-    t.date 'appointment_date', null: false
-    t.float 'price', null: false
-    t.integer 'duration', null: false
-    t.time 'start_time', null: false
-    t.time 'end_time', null: false
-    t.float 'latitude', null: false
-    t.float 'longitude', null: false
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
+  create_table "dog_walkings", force: :cascade do |t|
+    t.integer "status"
+    t.datetime "appointment_date", null: false
+    t.float "price", null: false
+    t.integer "duration", null: false
+    t.datetime "start_date", null: false
+    t.datetime "end_date", null: false
+    t.float "latitude", null: false
+    t.float "longitude", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
-  create_table 'pets', force: :cascade do |t|
-    t.string 'name', null: false
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
+  create_table "pets", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
+
 end

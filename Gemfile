@@ -16,6 +16,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.8'
   gem 'rubocop', ' ~> 0.60.0'
   gem 'shoulda-matchers', '4.0.0.rc1'
+  gem 'timecop', '~> 0.9.1'
 end
 
 group :development do
