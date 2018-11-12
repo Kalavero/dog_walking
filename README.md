@@ -1,24 +1,39 @@
-# README
+# Dog Walkings
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
 
-Things you may want to cover:
+### Project
 
-* Ruby version
+#### Dependencies
 
-* System dependencies
+- Docker 18.09
+- Docker-compose 1.21
 
-* Configuration
+#### How to run
 
-* Database creation
+run:
 
-* Database initialization
+```
+./scripts/setup
+```
 
-* How to run the test suite
+then:
+```
+./scripts/dog_walkings
+```
 
-* Services (job queues, cache servers, search engines, etc.)
+#### Running the tests
 
-* Deployment instructions
+```
+./scripts/dog_walkings rspec
+```
 
-* ...
+### Api Documentation
+
+#### Summary
+
+ - Dog walkings
+  - [index](#index)
+  - [show](#show)
+  - [create](#create)
+  - [start_walk](#start_walk)
+  - [finish_walk](#finish_walk)
