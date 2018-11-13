@@ -60,6 +60,9 @@ green_text 'Done!'
 yellow_text 'Preparing the development database...'
 docker-compose run -e RAILS_ENV=development --rm web bundle exec rails db:setup
 
+yellow_text 'Seeding the database'
+docker-compose run -e RAILS_ENV=development --rm web bundle exec rails db:seed
+
 yellow_text 'Preparing the test database...'
 docker-compose run -e RAILS_ENV=test --rm web bundle exec rails db:setup
 
