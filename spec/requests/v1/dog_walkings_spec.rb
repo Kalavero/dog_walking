@@ -53,7 +53,7 @@ RSpec.describe 'dog_walkings API' do
                       pets: [create(:pet)])
 
           get '/v1/dog_walkings',
-            params: { not_started: true, page: 2, per_page: 2 }
+              params: { not_started: true, page: 2, per_page: 2 }
 
           expect(json_response.size).to eq(1)
         end
@@ -120,7 +120,11 @@ RSpec.describe 'dog_walkings API' do
   end
 
   describe 'POST /v1/dog_walkings' do
-    it 'returns HTTP status 301 created' do
+    before(:each) do
+      create(:plan)
+    end
+
+    it 'returns HTTP status 201 created' do
       pet = create(:pet)
       dog_walking = build(:dog_walking, pets: [pet])
 
@@ -157,8 +161,8 @@ RSpec.describe 'dog_walkings API' do
         }
       }
 
-     expect { post('/v1/dog_walkings', params: post_params) }
-       .to change { DogWalking.count }.by(1)
+      expect { post('/v1/dog_walkings', params: post_params) }
+        .to change { DogWalking.count }.by(1)
     end
 
     it 'returns the created dog walking in json format' do

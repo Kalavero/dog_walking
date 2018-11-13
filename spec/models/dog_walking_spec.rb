@@ -23,7 +23,7 @@ RSpec.describe DogWalking do
     it { should validate_presence_of(:end_date) }
     it { should validate_presence_of(:latitude) }
     it { should validate_presence_of(:longitude) }
-    it { should validate_presence_of(:pets)}
+    it { should validate_presence_of(:pets) }
 
     it 'allows only 30 and 60 minutes durations' do
       dog_walking = build(:dog_walking, duration: 45, pets: [create(:pet)])

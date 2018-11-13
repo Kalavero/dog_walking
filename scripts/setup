@@ -4,10 +4,6 @@ set -E
 
 cd $(dirname $(dirname $0))
 
-blue_text(){
-  echo -e "\e[34m$1\e[0m"
-}
-
 yellow_text(){
   echo -e "\e[33m$1\e[0m"
 }
@@ -18,10 +14,6 @@ red_text(){
 
 green_text(){
   echo -e "\e[32m$1\e[0m"
-}
-
-white_text(){
-  echo $1
 }
 
 build_docker_image(){
@@ -61,12 +53,9 @@ yellow_text 'Installing all gems...'
 docker-compose run --rm web bundle
 green_text 'Done!'
 
-##############################
-### Services configuration ###
-##############################
-
-blue_text 'Copying config files...'
-cp -f config/config.yml.docker config/config.yml
+######################
+### Database Setup ###
+######################
 
 yellow_text 'Preparing the development database...'
 docker-compose run -e RAILS_ENV=development --rm web bundle exec rails db:setup

@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 class DogWalking < ApplicationRecord
-
   DURATIONS = [30, 60].freeze
-  enum status: [:scheduled, :started, :finished]
+  enum status: %i[scheduled started finished]
 
   has_many :dog_walking_pets
   has_many :pets, through: :dog_walking_pets
@@ -14,8 +13,7 @@ class DogWalking < ApplicationRecord
   validates :duration, inclusion: { in: DURATIONS }
   scope :not_started, -> { where('start_date > ?', Time.zone.now) }
 
-
-  def as_json(options={})
+  def as_json(_options = {})
     super(include: :pets)
   end
 
@@ -28,6 +26,6 @@ class DogWalking < ApplicationRecord
   end
 
   def true_walk_duration
-    ((end_date - start_date)/1.minutes).to_i
+    ((end_date - start_date) / 1.minutes).to_i
   end
 end
