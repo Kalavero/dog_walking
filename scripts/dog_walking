@@ -1,0 +1,78 @@
+#!/bin/bash
+
+red_text(){
+  echo -e "\e[31m$1\e[0m"
+}
+
+blue_text(){
+  echo -e "\e[34m$1\e[0m"
+}
+
+run(){
+  docker-compose run -e RAILS_ENV=development --rm web $@
+}
+
+run_test(){
+  docker-compose run -e RAILS_ENV=test --rm web $@
+}
+
+case $1 in
+  setup)
+    ./scripts/setup
+    ./scripts/dog_walking
+    ;;
+  start)
+    docker-compose up
+    ;;
+  stop)
+    docker-compose stop
+    ;;
+  clean)
+    docker-compose down
+    ;;
+  bash)
+    run bash
+    ;;
+  console)
+    run bundle exec padrino console
+    ;;
+  bundle)
+    run bundle
+    ;;
+  rspec)
+    run bundle exec rspec
+    ;;
+  run)
+    run ${@:2}
+    ;;
+  db:setup)
+    echo 'Setting up the database'
+    run bundle exec rake db:setup
+    run_test bundle exec rake db:setup
+    ;;
+  db:migrate)
+    echo 'Migrating the databases'
+    run bundle exec rake db:migrate
+    run_test bundle exec rake db:setup
+    ;;
+  *)
+    echo 'Usage: dog_walking<option> <arguments>'
+    echo 'Examples:'
+    echo './scripts/dog_walking rspec spec/models'
+    echo './scripts/dog_walking run bundle exec rake -T'
+    echo
+    echo 'Available options:'
+    echo -e '\e[33m setup:\e[0m used to setup the development environment'
+    echo -e '\e[33m start:\e[0m brings up dog_walking web and sidekiq'
+    echo -e '\e[33m stop:\e[0m halts dog_walking and all its dependencies'
+    echo -e '\e[33m clean:\e[0m stops and removes all containers'
+    echo -e '\e[33m rspec:\e[0m run all specs'
+    echo -e '\e[33m bash:\e[0m brings up a bash session to play with'
+    echo -e '\e[33m console:\e[0m rails console'
+    echo -e '\e[33m bundle:\e[0m install gems'
+    echo -e '\e[33m run:\e[0m runs the given command inside the container. Can be used to run rake tasks, gems or w/e'
+    echo -e '\e[33m db:setup:\e[0m sets up the database by creating, migrating and seeding'
+    echo -e '\e[33m db:migrate:\e[0m migrates the database'
+  ;;
+esac
+

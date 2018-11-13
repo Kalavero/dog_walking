@@ -1,0 +1,79 @@
+#!/bin/bash
+
+set -E
+
+cd $(dirname $(dirname $0))
+
+blue_text(){
+  echo -e "\e[34m$1\e[0m"
+}
+
+yellow_text(){
+  echo -e "\e[33m$1\e[0m"
+}
+
+red_text(){
+  echo -e "\e[31m$1\e[0m"
+}
+
+green_text(){
+  echo -e "\e[32m$1\e[0m"
+}
+
+white_text(){
+  echo $1
+}
+
+build_docker_image(){
+  if [ -f Dockerfile  ]; then
+    docker build --build-arg UID=$UID -t dog_walking .
+  else
+    red_text 'Could not find Dockerfile.'
+    return
+  fi
+}
+
+
+##########################
+### Build docker image ###
+##########################
+
+yellow_text 'Building dog_walking image, this might take a while...'
+
+if [[ $(docker images | grep dog_walking) ]]; then
+  green_text 'Found dog_walking docker image. Do you want to rebuild it? (y/N)'
+  read build_image
+
+  if [[ $build_image == 'y' ]]; then
+    build_docker_image
+  else
+    yellow_text 'Ok, skipping...'
+  fi
+else
+  build_docker_image
+fi
+
+############
+### Gems ###
+############
+
+yellow_text 'Installing all gems...'
+docker-compose run --rm web bundle
+green_text 'Done!'
+
+##############################
+### Services configuration ###
+##############################
+
+blue_text 'Copying config files...'
+cp -f config/config.yml.docker config/config.yml
+
+yellow_text 'Preparing the development database...'
+docker-compose run -e RAILS_ENV=development --rm web bundle exec rails db:setup
+
+yellow_text 'Preparing the test database...'
+docker-compose run -e RAILS_ENV=test --rm web bundle exec rails db:setup
+
+green_text 'Everything ready to run dog_walking!'
+
+

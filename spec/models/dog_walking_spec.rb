@@ -3,6 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe DogWalking do
+  include ActiveSupport::Testing::TimeHelpers
   ####################
   ### Associations ###
   ####################
@@ -62,13 +63,12 @@ RSpec.describe DogWalking do
 
       allow(dog_walking).to receive(:update!)
 
-      Timecop.freeze(Time.zone.now) do
+      freeze_time
 
-        dog_walking.start_walk
+      dog_walking.start_walk
 
-        expect(dog_walking).to have_received(:update!)
-          .with(status: :started, start_date: Time.zone.now)
-      end
+      expect(dog_walking).to have_received(:update!)
+        .with(status: :started, start_date: Time.zone.now)
     end
   end
 
@@ -78,13 +78,12 @@ RSpec.describe DogWalking do
 
       allow(dog_walking).to receive(:update!)
 
-      Timecop.freeze(Time.zone.now) do
+      freeze_time
 
-        dog_walking.finish_walk
+      dog_walking.finish_walk
 
-        expect(dog_walking).to have_received(:update!)
-          .with(status: :finished, end_date: Time.zone.now)
-      end
+      expect(dog_walking).to have_received(:update!)
+        .with(status: :finished, end_date: Time.zone.now)
     end
   end
 
