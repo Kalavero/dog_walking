@@ -13,12 +13,12 @@
 run:
 
 ```
-./scripts/setup
+./scripts/dog_walking setup
 ```
 
 then:
 ```
-./scripts/dog_walkings
+./scripts/dog_walking
 ```
 
 #### Running the tests
