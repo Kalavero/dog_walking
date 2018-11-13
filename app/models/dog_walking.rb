@@ -15,6 +15,10 @@ class DogWalking < ApplicationRecord
   scope :not_started, -> { where('start_date > ?', Time.zone.now) }
 
 
+  def as_json(options={})
+    super(include: :pets)
+  end
+
   def start_walk
     update!(status: :started, start_date: Time.zone.now)
   end

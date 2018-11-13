@@ -84,7 +84,7 @@ RSpec.describe 'dog_walkings API' do
       get "/v1/dog_walkings/#{dog_walking.id}"
 
       expect(json_response.keys)
-        .to eq(dog_walking.attributes.symbolize_keys.keys)
+        .to eq(dog_walking.attributes.symbolize_keys.keys << :pets)
     end
 
     it 'returns the true duration of the walk' do
