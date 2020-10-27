@@ -2,7 +2,7 @@
 
 source 'https://rubygems.org'
 
-ruby '2.5.3'
+ruby '2.5.8'
 
 gem 'bootsnap', '>= 1.1.0', require: false
 gem 'kaminari', '~> 1.1.1'
